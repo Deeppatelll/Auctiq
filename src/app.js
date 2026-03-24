@@ -1,13 +1,18 @@
-const express = require("express");
+const User = require("./models/User");
 
-const app = express();
+// create user (POST)
+app.post("/api/test-user", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-// Middleware
-app.use(express.json());
+    const user = await User.create({
+      name,
+      email,
+      password,
+    });
 
-// Test route
-app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
-
-module.exports = app;
